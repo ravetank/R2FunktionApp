@@ -1,0 +1,3 @@
+git add _config.yml
+git commit -m "Exclude unnecessary folders from GitHub Pages build"
+git push origin main
