@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inProgressList = document.getElementById('inProgressList');
     const doneList = document.getElementById('doneList');
 
-    const API_BASE_URL = 'http://localhost:3000'; // Update to your deployed backend URL
+    const API_BASE_URL = 'https://r2funktionapp.onrender.com'; // Update to your deployed backend URL
     let currentProjectId = null;
 
     // Helper functions
