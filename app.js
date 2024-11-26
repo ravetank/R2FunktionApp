@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentProjectName = document.getElementById('currentProjectName');
   const taskInput = document.getElementById('taskInput');
   const assignedToInput = document.getElementById('assignedToInput');
+  const priorityInput = document.getElementById('priorityInput'); // New input for priority
+  const deadlineInput = document.getElementById('deadlineInput'); // New input for deadline
   const linkInput = document.getElementById('linkInput');
   const imageInput = document.getElementById('imageInput');
   const addTaskButton = document.getElementById('addTaskButton');
@@ -33,8 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
       projectList.innerHTML = '';
       projects.forEach((project) => {
         const li = document.createElement('li');
-        li.textContent = project.name;
-        li.addEventListener('click', () => loadProject(project._id));
+
+        const projectNameSpan = document.createElement('span');
+        projectNameSpan.textContent = project.name;
+        projectNameSpan.classList.add('project-name');
+        projectNameSpan.addEventListener('click', () => loadProject(project._id));
+
+        const projectActions = document.createElement('div');
+        projectActions.classList.add('project-actions');
+
+        // View Button
+        const viewButton = document.createElement('button');
+        viewButton.textContent = 'View';
+        viewButton.addEventListener('click', () => loadProject(project._id));
+        projectActions.appendChild(viewButton);
+
+        // Delete Button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteProject(project._id));
+        projectActions.appendChild(deleteButton);
+
+        li.appendChild(projectNameSpan);
+        li.appendChild(projectActions);
         projectList.appendChild(li);
       });
     } catch (error) {
@@ -61,6 +84,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function deleteProject(projectId) {
+    if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+      try {
+        await fetchJSON(`${API_BASE_URL}/projects/${projectId}`, {
+          method: 'DELETE',
+        });
+        if (projectId === currentProjectId) {
+          // Hide the task section if the current project is deleted
+          taskSection.style.display = 'none';
+          currentProjectId = null;
+        }
+        await renderProjects();
+      } catch (error) {
+        console.error('Error deleting project:', error);
+      }
+    }
+  }
+
   // Tasks
   async function loadProject(projectId) {
     try {
@@ -77,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function addTask() {
     const taskName = taskInput.value.trim();
     const assignedTo = assignedToInput.value.trim();
+    const priority = priorityInput.value;
+    const deadline = deadlineInput.value;
     const link = linkInput.value.trim();
     const imageFile = imageInput.files[0];
 
@@ -101,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({
               name: taskName,
               assignedTo: assignedTo || null,
+              priority: priority || 'Medium',
+              deadline: deadline || null,
               link: link || null,
               image: imageDataUrl || null,
               status: 'todo',
@@ -108,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           taskInput.value = '';
           assignedToInput.value = '';
+          priorityInput.value = 'Medium';
+          deadlineInput.value = '';
           linkInput.value = '';
           imageInput.value = '';
           await loadProject(currentProjectId);
@@ -125,10 +172,16 @@ document.addEventListener('DOMContentLoaded', () => {
     inProgressList.innerHTML = '';
     doneList.innerHTML = '';
 
+    // Sort tasks by priority (High, Medium, Low)
+    tasks.sort((a, b) => {
+      const priorities = { High: 1, Medium: 2, Low: 3 };
+      return priorities[a.priority] - priorities[b.priority];
+    });
+
     tasks.forEach((task) => {
       const li = document.createElement('li');
       li.draggable = true;
-      li.dataset.taskId = task._id; // Use task ID instead of index
+      li.dataset.taskId = task._id;
 
       const taskDetails = document.createElement('div');
       taskDetails.classList.add('task-details');
@@ -141,6 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const assignedTo = document.createElement('span');
         assignedTo.textContent = `Assigned to: ${task.assignedTo}`;
         taskDetails.appendChild(assignedTo);
+      }
+
+      if (task.priority) {
+        const priority = document.createElement('span');
+        priority.textContent = `Priority: ${task.priority}`;
+        priority.classList.add(`priority-${task.priority.toLowerCase()}`);
+        taskDetails.appendChild(priority);
+      }
+
+      if (task.deadline) {
+        const deadline = document.createElement('span');
+        deadline.textContent = `Deadline: ${new Date(task.deadline).toLocaleDateString()}`;
+        taskDetails.appendChild(deadline);
       }
 
       if (task.link) {
@@ -166,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
       deleteButton.classList.add('delete-button');
-      deleteButton.addEventListener('click', () => deleteTask(task._id)); // Pass task ID
+      deleteButton.addEventListener('click', () => deleteTask(task._id));
       taskActions.appendChild(deleteButton);
 
       li.appendChild(taskActions);

@@ -21,17 +21,19 @@ mongoose.connect(process.env.MONGO_URI, {
 // Define the Task schema
 const TaskSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  assignedTo: String,
+  assignedTo: String, // In future, this can reference a User model
   link: String,
   image: String,
   status: { type: String, default: 'todo', enum: ['todo', 'in-progress', 'done'] },
+  priority: { type: String, enum: ['High', 'Medium', 'Low'], default: 'Medium' },
+  deadline: Date,
 }, { timestamps: true });
 
 // Define the Project schema
 const ProjectSchema = new mongoose.Schema({
   name: { type: String, required: true },
   tasks: [TaskSchema],
-}, { timestamps: true }); // Add timestamps for createdAt and updatedAt
+}, { timestamps: true });
 
 // Create the Project model
 const Project = mongoose.model('Project', ProjectSchema);
