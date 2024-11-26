@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Define the Task schema
 const TaskSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  assignedTo: String, // In future, this can reference a User model
+  assignedTo: String,
   link: String,
   image: String,
   status: { type: String, default: 'todo', enum: ['todo', 'in-progress', 'done'] },
@@ -90,7 +90,7 @@ app.post('/projects', async (req, res) => {
   }
 });
 
-// Update a project by ID (used for updating tasks)
+// Update a project by ID
 app.put('/projects/:id', async (req, res) => {
   try {
     const { id } = req.params;

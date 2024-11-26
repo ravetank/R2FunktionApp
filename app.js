@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentProjectName = document.getElementById('currentProjectName');
   const taskInput = document.getElementById('taskInput');
   const assignedToInput = document.getElementById('assignedToInput');
-  const priorityInput = document.getElementById('priorityInput'); // New input for priority
-  const deadlineInput = document.getElementById('deadlineInput'); // New input for deadline
+  const priorityInput = document.getElementById('priorityInput');
+  const deadlineInput = document.getElementById('deadlineInput');
   const linkInput = document.getElementById('linkInput');
   const imageInput = document.getElementById('imageInput');
   const addTaskButton = document.getElementById('addTaskButton');
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchJSON(url, options = {}) {
     const response = await fetch(url, options);
     if (!response.ok) {
+      // You can add more detailed error handling here
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     return response.json();
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await fetchJSON(`${API_BASE_URL}/projects`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: projectName, tasks: [] }),
+          body: JSON.stringify({ name: projectName }),
         });
         projectInput.value = '';
         await renderProjects();
@@ -289,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const newStatus = e.currentTarget.dataset.status;
     try {
-      // Update the task status using the new endpoint
+      // Update the task status using the endpoint
       await fetchJSON(`${API_BASE_URL}/projects/${currentProjectId}/tasks/${draggedTaskId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
