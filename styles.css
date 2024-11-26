@@ -1,9 +1,16 @@
+/* Importing Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+/* Global Styles */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    background-color: #0d0d0d; /* Deep dark background */
+    color: #f2f2f2;
     margin: 0;
     padding: 0;
+    background-image: url('background-pattern.png'); /* Subtle background pattern */
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .container {
@@ -12,14 +19,43 @@ body {
     padding: 20px;
 }
 
+/* Heading Styles */
 h1, h2, h3 {
-    color: #ff6600;
+    font-family: 'Orbitron', sans-serif;
+    color: #e60073; /* Vibrant magenta color */
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background-color: #e60073;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+}
+
+/* Project and Task Sections */
 #projectSection, #taskSection {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 1s ease-in-out;
 }
 
+/* Input Styles */
 input[type="text"],
 input[type="url"],
 input[type="date"],
@@ -27,73 +63,103 @@ select {
     padding: 10px;
     width: calc(100% - 22px);
     margin-bottom: 10px;
-    border: none;
-    border-radius: 3px;
-    background-color: #333;
-    color: #fff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #f2f2f2;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input::placeholder {
-    color: #bbb;
+    color: #888;
 }
 
+input:focus, select:focus {
+    outline: none;
+    border-color: #e60073;
+    box-shadow: 0 0 10px #e60073;
+}
+
+/* Button Styles */
 button {
-    padding: 10px 20px;
-    background-color: #ff6600;
-    color: white;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #e60073, #ff3399);
+    color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 button:hover {
-    background-color: #e65c00;
+    background: linear-gradient(45deg, #ff3399, #e60073);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #e60073;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+button:active {
+    transform: scale(0.95);
 }
 
+/* Project List */
 #projectList li {
-    padding: 10px;
-    background-color: #333;
-    margin-bottom: 5px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-left: 5px solid #e60073;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s;
+    animation: slideIn 0.5s ease-in-out;
 }
 
 #projectList li:hover {
-    background-color: #444;
+    background-color: #262626;
+}
+
+#projectList li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('vinyl-record.png'); /* Subtle vinyl record icon */
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 100px;
+    opacity: 0.1;
+    pointer-events: none;
 }
 
 .project-name {
     cursor: pointer;
+    font-weight: 600;
 }
 
 .project-actions {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 }
 
 .project-actions button {
-    padding: 5px 10px;
-    background-color: #ff6600;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
+    padding: 8px 16px;
 }
 
-.project-actions button:hover {
-    background-color: #e65c00;
-}
-
+/* Task Input Section */
 #taskInputSection {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px;
 }
 
 #taskInputSection input,
@@ -102,6 +168,7 @@ ul {
     flex: 1 1 200px;
 }
 
+/* Kanban Board */
 #kanbanBoard {
     display: flex;
     gap: 20px;
@@ -110,27 +177,54 @@ ul {
 
 .kanban-column {
     flex: 1;
-    background-color: #2a2a2a;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: rgba(26, 26, 26, 0.9);
+    padding: 15px;
+    border-radius: 10px;
     min-width: 300px;
+    backdrop-filter: blur(5px);
+    position: relative;
+    animation: fadeIn 1s ease-in-out;
 }
 
 .kanban-column h3 {
     text-align: center;
     margin-top: 0;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.kanban-column::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    background-image: url('house-music-icon.png'); /* House music icon */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    transform: rotate(20deg);
 }
 
 .task-list {
-    min-height: 200px;
+    min-height: 300px;
 }
 
 .task-list li {
-    background-color: #333;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 3px;
+    background-color: #1a1a1a;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
     cursor: grab;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.3s;
+    animation: slideUp 0.5s ease-in-out;
+}
+
+.task-list li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px #e60073;
 }
 
 .task-list li.dragging {
@@ -143,43 +237,101 @@ ul {
 }
 
 .task-details span {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+}
+
+.task-details a {
+    color: #e60073;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.task-details a:hover {
+    color: #ff3399;
 }
 
 .task-actions {
     display: flex;
-    gap: 5px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .task-actions button {
-    padding: 5px;
-    background-color: #ff6600;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
+    padding: 8px 16px;
 }
 
-.task-actions button:hover {
-    background-color: #e65c00;
-}
-
+/* Task Image */
 img.task-image {
     max-width: 100%;
-    border-radius: 3px;
+    border-radius: 5px;
     margin-top: 10px;
+    border: 2px solid #e60073;
+    transition: transform 0.3s;
 }
 
-/* Styles for task priority */
+img.task-image:hover {
+    transform: scale(1.05);
+}
+
+/* Priority Styles */
 .priority-high {
-    color: #ff4d4d;
+    color: #ff3333;
+    font-weight: bold;
 }
 
 .priority-medium {
-    color: #ffa64d;
+    color: #ff9933;
+    font-weight: bold;
 }
 
 .priority-low {
-    color: #99e699;
+    color: #99cc33;
+    font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e60073;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff3399;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #taskInputSection input,
+    #taskInputSection select,
+    #taskInputSection button {
+        flex: 1 1 100%;
+    }
+    
+    .kanban-column {
+        min-width: 100%;
+    }
 }

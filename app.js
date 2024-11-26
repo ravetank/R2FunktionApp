@@ -47,13 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // View Button
         const viewButton = document.createElement('button');
-        viewButton.textContent = 'View';
+        viewButton.innerHTML = '<i class="fas fa-eye"></i> View';
         viewButton.addEventListener('click', () => loadProject(project._id));
         projectActions.appendChild(viewButton);
 
         // Delete Button
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
         deleteButton.addEventListener('click', () => deleteProject(project._id));
         projectActions.appendChild(deleteButton);
 
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
       taskActions.classList.add('task-actions');
 
       const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
+      deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
       deleteButton.classList.add('delete-button');
       deleteButton.addEventListener('click', () => deleteTask(task._id));
       taskActions.appendChild(deleteButton);
