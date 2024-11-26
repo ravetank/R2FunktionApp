@@ -197,8 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event listeners
-    addProjectButton.addEventListener('click', addProject);
-    addTaskButton.addEventListener('click', addTask);
+addProjectButton.addEventListener('click', () => {
+    console.log('Add Project button clicked'); // Debug log
+    addProject();
+});
 
     // Initialize the app
     renderProjects();
